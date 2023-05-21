@@ -45,3 +45,4 @@ We have the following tests:
    1. arith_stack_multi_single_disj_matmul: Arithmetic matrix multiplications, repeating single disjunction, Lemma 5.4 version.
    2. arith_stack_multi_single_disj_matmul_RO: Arithmetic matrix multiplications, repeating single disjunction, RO version.
 
+# improved-zk-ram
