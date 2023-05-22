@@ -113,6 +113,51 @@ public:
         
     }
 
+    void Teardown_Batch(int &party, int block_size) {
+        ROMTuple tmp;
+        for (int i = 0; i < N; i++) {
+            tmp.idx = IntFp(i, PUBLIC);
+            uint64_t pos = latest_pos[i]; // the last pos
+            tmp.version = IntFp(HIGH64(write_list[pos].version.value), ALICE);            
+            tmp.val = IntFp(HIGH64(write_list[pos].val.value), ALICE);
+            read_list.push_back(tmp);
+        }
+
+        uint64_t A0, A1, A2; // to compress the tuple into one IntFp
+        uint64_t X; // evaluate at this value
+        if (party == ALICE) {
+            ZKFpExec::zk_exec->recv_data(&A0, sizeof(uint64_t));
+            ZKFpExec::zk_exec->recv_data(&A1, sizeof(uint64_t));
+            ZKFpExec::zk_exec->recv_data(&A2, sizeof(uint64_t));
+            ZKFpExec::zk_exec->recv_data(&X, sizeof(uint64_t));
+        } else {
+            PRG tmpprg;
+		    tmpprg.random_data(&A0, sizeof(uint64_t));
+		    A0 = A0 % PR;
+		    tmpprg.random_data(&A1, sizeof(uint64_t));
+		    A1 = A1 % PR;
+		    tmpprg.random_data(&A2, sizeof(uint64_t));
+		    A2 = A2 % PR;
+            tmpprg.random_data(&X, sizeof(uint64_t));
+            X = X % PR;
+		    ZKFpExec::zk_exec->send_data(&A0, sizeof(uint64_t));  
+            ZKFpExec::zk_exec->send_data(&A1, sizeof(uint64_t));  
+            ZKFpExec::zk_exec->send_data(&A2, sizeof(uint64_t));  
+            ZKFpExec::zk_exec->send_data(&X, sizeof(uint64_t));  
+        }
+	    
+        IntFp prod_read = IntFp(1, PUBLIC);
+        IntFp prod_write = IntFp(1, PUBLIC);
+        for (int i = 0; i < N+T; i++) {
+            prod_read = prod_read * (read_list[i].idx * A0 + read_list[i].version * A1 + read_list[i].val * A2 + X);
+            prod_write = prod_write * (write_list[i].idx * A0 + write_list[i].version * A1 + write_list[i].val * A2 + X);
+        }
+        // check they are equal, namely, the same is zero
+        IntFp final_zero = prod_read + prod_write.negate();
+	    batch_reveal_check_zero(&final_zero, 1);
+        
+    }    
+
 };
 
 #endif

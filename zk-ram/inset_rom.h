@@ -93,16 +93,20 @@ public:
             ZKFpExec::zk_exec->send_data(&X, sizeof(uint64_t));  
         }
 	    
-        IntFp prod_read = IntFp(1, PUBLIC);
-        IntFp prod_write = IntFp(1, PUBLIC);
-        for (int i = 0; i < N+T; i++) {
-            prod_read = prod_read * (read_list[i].idx * A0 + read_list[i].version * A1 + X);
+        IntFp prod_read = IntFp(1, PUBLIC);        
+        for (int i = 0; i < N+T; i++)
+            prod_read = prod_read * (read_list[i].idx * A0 + read_list[i].version * A1 + X);        
+
+        uint64_t acc = 1;
+        for (int i = 0; i < N; i++) 
+            acc = mult_mod(acc, add_mod(mult_mod(A0, i+1), X));                        
+        IntFp prod_write = IntFp(acc, PUBLIC);
+        for (int i = N; i < N+T; i++)             
             prod_write = prod_write * (write_list[i].idx * A0 + write_list[i].version * A1 + X);
-        }
+        
         // check they are equal, namely, the same is zero
         IntFp final_zero = prod_read + prod_write.negate();
 	    batch_reveal_check_zero(&final_zero, 1);
-        
     }
     
 
