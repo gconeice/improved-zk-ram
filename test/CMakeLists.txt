@@ -27,3 +27,9 @@ add_test_case_with_run(arith zk_ram)
 # Test batch optimized ROM
 
 add_test_case_with_run(arith zk_rom_block)
+add_test_case_with_run(arith inset_zk_rom_block)
+
+# Test batch optimzed RAM
+
+add_test_case_with_run(arith zk_ram_block)
+
