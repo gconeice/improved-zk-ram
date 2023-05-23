@@ -17,6 +17,12 @@ using namespace std;
 int port, party;
 const int threads = 1;
 
+uint64_t comm(BoolIO<NetIO> *ios[threads]) {
+	uint64_t c = 0;
+	for(int i = 0; i < threads; ++i)
+		c += ios[i]->counter;
+	return c;
+}
 
 inline uint64_t calculate_hash(PRP &prp, uint64_t x) {
 	block bk = makeBlock(0, x);
@@ -35,6 +41,7 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN, int 
 	auto start = clock_start();
 
 	setup_zk_arith<BoolIO<NetIO>>(ios, threads, party);
+	uint64_t com1 = comm(ios);
 
     ZKROM zkrom(ROM_N);
     zkrom.Setup(init_val);
@@ -53,6 +60,8 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN, int 
 	cout << logN << "\t" << ROM_N << "\t" << timeuse << " us\t" << party << " " << endl;
 	std::cout << std::endl;
 
+	uint64_t com2 = comm(ios) - com1;
+	std::cout << "communication (B): " << com2 << std::endl;
 
 #if defined(__linux__)
 	struct rusage rusage;
@@ -70,7 +79,7 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN, int 
 
 int main(int argc, char** argv) {
     if(argc < 4) {
-		std::cout << "usage: bin/test_arith_zk_rom_block PARTY PORT logN blocksize" << std::endl;
+		std::cout << "usage: bin/test_arith_zk_rom_block PARTY PORT logN blockSize" << std::endl;
 		return -1;    
     }
 
