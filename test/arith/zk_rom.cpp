@@ -23,6 +23,12 @@ uint64_t comm(BoolIO<NetIO> *ios[threads]) {
 		c += ios[i]->counter;
 	return c;
 }
+uint64_t comm2(BoolIO<NetIO> *ios[threads]) {
+	uint64_t c = 0;
+	for(int i = 0; i < threads; ++i)
+		c += ios[i]->io->counter;
+	return c;
+}
 
 inline uint64_t calculate_hash(PRP &prp, uint64_t x) {
 	block bk = makeBlock(0, x);
@@ -34,19 +40,21 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN) {
 
     uint64_t ROM_N = 1;
     ROM_N <<= logN;
+	int max_itr = 20;
     
     vector<uint64_t> init_val;
     for (int i = 0; i < ROM_N; i++) init_val.push_back(i);
 
+	uint64_t com1 = comm(ios);
+	uint64_t com11 = comm2(ios);
 	auto start = clock_start();
 
 	setup_zk_arith<BoolIO<NetIO>>(ios, threads, party);
-	uint64_t com1 = comm(ios);
 
     ZKROM zkrom(ROM_N);
     zkrom.Setup(init_val);
     
-    for (int itr = 0; itr < 20; itr++)
+    for (int itr = 0; itr < max_itr; itr++)
         for (int i = 0; i < ROM_N; i++) {
             IntFp accid = IntFp(i, PUBLIC);
             zkrom.Access(accid);
@@ -57,10 +65,14 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN) {
 	finalize_zk_arith<BoolIO<NetIO>>();
 	auto timeuse = time_from(start);	
 	cout << logN << "\t" << ROM_N << "\t" << timeuse << " us\t" << party << " " << endl;
+	cout << "time per access: " << timeuse/(max_itr*ROM_N) << "us" << endl;
 	std::cout << std::endl;
 
 	uint64_t com2 = comm(ios) - com1;
+	uint64_t com22 = comm2(ios) - com11;
 	std::cout << "communication (B): " << com2 << std::endl;
+	std::cout << "communication (B): " << com22 << std::endl;
+	cout << "comm per access: " << double(com2)/(max_itr*ROM_N) << "B" << endl;
 
 #if defined(__linux__)
 	struct rusage rusage;
