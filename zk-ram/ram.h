@@ -56,7 +56,7 @@ public:
         bound_check_rom->Setup();
     }
 
-    IntFp Access(IntFp& id, IntFp& val) {
+    IntFp Access(IntFp& id, IntFp& val, IntFp& rw) {
         uint64_t addr = HIGH64(id.value);
         RAMTuple tmp_w, tmp_r;
         tmp_r.idx = tmp_w.idx = id;
@@ -67,7 +67,7 @@ public:
         tmp_r.timestamp = old_timestamp;
         tmp_r.val = old_val;
         tmp_w.timestamp = IntFp(++T, PUBLIC);
-        tmp_w.val = val;
+        tmp_w.val = old_val + rw * (val + old_val.negate());
         read_list.push_back(tmp_r);
         write_list.push_back(tmp_w);
         // boundcheck access

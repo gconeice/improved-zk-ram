@@ -41,7 +41,7 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN, int 
     uint64_t RAM_N = 1;
     RAM_N <<= logN;
 
-    int max_itr = 20;
+    int max_itr = 1<<(23/logN);
     uint64_t total_T = RAM_N * max_itr;
     
     vector<uint64_t> init_val;
@@ -55,18 +55,27 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN, int 
 
     IZKRAM zkram(RAM_N, total_T);
     zkram.Setup(init_val);
+
+	auto time1 = time_from(start)/(max_itr*RAM_N);
+	cout << "Setup: " << time1 << "us" << endl;
+	auto start1 = clock_start();	
     
     for (int itr = 0; itr < max_itr; itr++)
         for (int i = 0; i < RAM_N; i++) {
             IntFp accid = IntFp(i, PUBLIC);
             IntFp wbval = IntFp(RAM_N*itr + i, PUBLIC);
-            zkram.Access(accid, wbval);
+			IntFp rw = IntFp(0, PUBLIC);
+            zkram.Access(accid, wbval, rw);
         }
+
+	auto time2 = time_from(start1)/(max_itr*RAM_N);
+	cout << "Access: " << time2 << "us" << endl;
 
     zkram.Teardown_Batch(party, blockSize);
 
 	finalize_zk_arith<BoolIO<NetIO>>();
 	auto timeuse = time_from(start);	
+	cout << "Teardown: " << timeuse/(max_itr*RAM_N)-time1-time2 << "us" << endl;	
 	cout << logN << "\t" << RAM_N << "\t" << timeuse << " us\t" << party << " " << endl;
 	cout << "time per access: " << timeuse/(max_itr*RAM_N) << "us" << endl;
 	std::cout << std::endl;

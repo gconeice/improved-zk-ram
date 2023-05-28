@@ -60,7 +60,8 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN) {
         for (int i = 0; i < RAM_N; i++) {
             IntFp accid = IntFp(i, PUBLIC);
             IntFp wbval = IntFp(RAM_N*itr + i, PUBLIC);
-            zkram.Access(accid, wbval);
+			IntFp rw = IntFp(0, PUBLIC);
+            zkram.Access(accid, wbval, rw);
         }
 
     zkram.Teardown_Basic(party);
