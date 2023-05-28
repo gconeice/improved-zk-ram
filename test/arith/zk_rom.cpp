@@ -40,7 +40,7 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN) {
 
     uint64_t ROM_N = 1;
     ROM_N <<= logN;
-	int max_itr = 20;
+	int max_itr = 1<<(23-logN);
     
     vector<uint64_t> init_val;
     for (int i = 0; i < ROM_N; i++) init_val.push_back(i);
