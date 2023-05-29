@@ -41,7 +41,7 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN, int 
     uint64_t RAM_N = 1;
     RAM_N <<= logN;
 
-    int max_itr = 1<<(23/logN);
+    int max_itr = 1<<(23-logN);
     uint64_t total_T = RAM_N * max_itr;
     
     vector<uint64_t> init_val;
