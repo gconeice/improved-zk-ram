@@ -40,7 +40,7 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN, int 
 
     uint64_t ROM_N = 1;
     ROM_N <<= logN;
-	int max_itr = 20;
+	int max_itr = 1<<(23-logN);
     
 	uint64_t com1 = comm(ios);
 	uint64_t com11 = comm2(ios);
@@ -50,12 +50,19 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN, int 
 	
     InsetZKROM zkrom(ROM_N);
     zkrom.Setup();
+
+	auto time1 = time_from(start)/(max_itr*ROM_N);
+	cout << "Setup: " << time1 << "us" << endl;
+	auto start1 = clock_start();	
     
     for (int itr = 0; itr < max_itr; itr++)
         for (int i = 1; i <= ROM_N; i++) {
             IntFp accid = IntFp(i, PUBLIC);
             zkrom.Access(accid);
         }
+
+	auto time2 = time_from(start1)/(max_itr*ROM_N);
+	cout << "Access: " << time2 << "us" << endl;		
 
 	// cheating testing
 	// IntFp accid = IntFp(0, PUBLIC);
@@ -65,6 +72,7 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN, int 
 
 	finalize_zk_arith<BoolIO<NetIO>>();
 	auto timeuse = time_from(start);	
+	cout << "Teardown: " << timeuse/(max_itr*ROM_N)-time1-time2 << "us" << endl;
 	cout << logN << "\t" << ROM_N << "\t" << timeuse << " us\t" << party << " " << endl;
 	cout << "time per access: " << timeuse/(max_itr*ROM_N) << "us" << endl;
 	std::cout << std::endl;
