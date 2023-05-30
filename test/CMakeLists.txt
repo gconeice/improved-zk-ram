@@ -33,3 +33,6 @@ add_test_case_with_run(arith inset_zk_rom_block)
 
 add_test_case_with_run(arith zk_ram_block)
 
+# Test GOT
+
+add_test_case_with_run(arith GOT)
