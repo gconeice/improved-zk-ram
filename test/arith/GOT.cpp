@@ -173,7 +173,7 @@ IntFp EqCheck(IntFp &x, IntFp &y, int &party) {
     IntFp b = (x + y.negate()) * r;
     // check (1-b)*b == 0 later
     queue_b.push_back(b);
-    return b.negate() + one;
+    return one + b.negate();
 }
 
 void BdCheck(int &party, uint64_t T, IntFp *x, uint64_t B1, uint64_t B2, int blockSize) {
@@ -323,12 +323,12 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN, int 
             tmp1.op = 0; tmp1.d = j;
             pre_sort.push_back(tmp1);
         }
-
-    sort(pre_sort.begin(), pre_sort.end());
-	auto start = clock_start();
+    
+	auto start = clock_start();   
 
     vector<GOTTuple> sort_L;
-    if (party == ALICE) {        
+    if (party == ALICE) {      
+        sort(pre_sort.begin(), pre_sort.end());  
         for (int i = 0; i < pre_sort.size(); i++) {
             GOTTuple tmp;
             tmp.l = IntFp(pre_sort[i].l, ALICE);
