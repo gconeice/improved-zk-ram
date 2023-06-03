@@ -1,11 +1,11 @@
-# Disjunction and Batched Disjunction for VOLE-based Zero Knowledge
+# Improved Constant Overhead ZK RAM
 
 Base
 =====
 We acknowledge that our protocols based on QuickSilver repo available at: https://github.com/emp-toolkit/emp-zk.
 In particular, we folk the repo and develop based on it.
 We also tweat some emp libraries.
-We will further clarify and obey the license in their repo if we open source.
+We will further clarify and obey the license in their repo in the final open source version.
 
 Installation EMP libraries
 =====
@@ -21,28 +21,23 @@ Build
 Test
 =====
 We have the following tests:
-1. Boolean single disjunction:
-   1. bool_stack_mat_mul_RO: Boolean matrix multiplications, RO version.
-   2. bool_stack_mat_mul: Boolean matrix multiplications, Lemma 5.4 version.
-   3. bool_stack_sha256_RO: Repeating SHA2, RO version.
-   4. bool_stack_sah256: Repeating SHA2, Lemma 5.4 version.
+1. Our RAM:
+   1. arith_zk_ram: Our RAM without optimization.
+   2. arith_zk_ram_block: Our RAM with optimization.
 
-2. Arithmetic single disjunction:
-   1. arith_stack_single_disj_matmul: Arithmetic matrix multiplications, Lemma 5.4 version.
-   2. arith_stack_single_disj_matmul_RO: Arithmetic matrix multiplications, RO version.
-   3. arith_stack_single_disj_matmul_online: Arithmetic matrix multiplications, Lemma 5.4 version, online cost only.
-   4. arith_stack_single_disj_matmul_online_RO: Arithmetic matrix multiplications, RO version, online cost only.
+2. Our ROM:
+   1. arith_zk_rom: Our ROM without optimization.
+   2. arith_zk_rom_block: Our ROM with optimization.
 
-3. Arithmetic batched disjunction:
-   1. arith_stack_batched_matmul_v1: Arithmetic matrix multiplications, RO version.
+3. Our set data structure:
+   1. arith_inset_zk_rom: Our set data structure without optimization.
+   2. arith_inset_zk_rom_block: Our set data structure with optimization.
 
-4. Arithmetic baseline QuickSilver:
-   1. arith_unstack_single_disj_matmul: Arithmetic matrix multiplications, single disjunction, QuickSilver.
-   2. arith_unstack_single_disj_matmul: Arithmetic matrix multiplications, single disjunction, QuickSilver, online cost only.
-   3. arith_unstack_batched_disj_matmul: Arithmetic matrix multiplications, batched disjunction, QuickSilver.
+4. Our implementation of GOT+22:
+   1. arith_GOT_nomulcheck: Our implementation of GOT+22 without any optimization.
+   2. arith_GOT: Our implementation of GOT+22 without high-fan-in multiplication optimization.
+   3. arith_GOT_block: Our implementation of GOT+22 with all optimizations.
 
-5. Repeating single disjunction:
-   1. arith_stack_multi_single_disj_matmul: Arithmetic matrix multiplications, repeating single disjunction, Lemma 5.4 version.
-   2. arith_stack_multi_single_disj_matmul_RO: Arithmetic matrix multiplications, repeating single disjunction, RO version.
-
-# improved-zk-ram
+Core Header Files
+=====
+zk-ram folder includes the core codes.
