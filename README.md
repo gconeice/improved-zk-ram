@@ -38,6 +38,8 @@ We have the following tests:
    2. arith_GOT: Our implementation of GOT+22 without high-fan-in multiplication optimization.
    3. arith_GOT_block: Our implementation of GOT+22 with all optimizations.
 
+5. FKL+21 as baseline: avaiable at https://github.com/emp-toolkit/emp-zk.
+
 Core Header Files
 =====
 zk-ram folder includes the core codes.
