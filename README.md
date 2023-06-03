@@ -1,13 +1,16 @@
 # Improved Constant Overhead ZK RAM
 
-Base
-=====
-We acknowledge that our protocols based on QuickSilver repo available at: https://github.com/emp-toolkit/emp-zk.
-In particular, we folk the repo and develop based on it.
-We also tweat some emp libraries.
-We will further clarify and obey the license in their repo in the final open source version.
+This repository implements state-of-the-art arithmetic circuits for Zero Knowledge random access memory (RAM), read-only memory (ROM), and a set membership data structure.
+See our paper for details.
 
-Installation EMP libraries
+Basis on EMP
+=====
+Our ZK RAM is based on QuickSilver's (https://eprint.iacr.org/2021/076) repository, which is part of the EMP Toolkit: https://github.com/emp-toolkit/emp-zk. In particular, we forked their repository and developed based on it. We also tweak some of EMP's libraries.
+In our final open source version, we will further clarify all changes.
+
+Our final open source version will obey the MIT license included as part of EMP.
+
+Installing EMP
 =====
 1. `wget https://raw.githubusercontent.com/emp-toolkit/emp-readme/master/scripts/install.py`
 2. `python[3] install.py --deps --tool --ot --zk`
@@ -18,28 +21,31 @@ Build
 =====
 1. `mkdir build && cd build && cmake ../ && make`
 
+Browsing the code
+=====
+`/zk-ram` contains our core code.
+`/test/arith` contains our test scaffolding (see next).
+`/emp-zk` contains the EMP Toolkit's ZK library, including the implementation
+of FKL+21 (see `/emp-zk/extensions/ram-zk`).
+
 Test
 =====
-We have the following tests:
+We include the following tests:
 1. Our RAM:
-   1. arith_zk_ram: Our RAM without optimization.
-   2. arith_zk_ram_block: Our RAM with optimization.
+   1. `/test/arith/zk_ram.cpp`: Our RAM without the high fan-in multiplication optimization.
+   2. `/test/arith/zk_ram_block.cpp`: Our RAM with the high fan-in multiplication optimization.
 
 2. Our ROM:
-   1. arith_zk_rom: Our ROM without optimization.
-   2. arith_zk_rom_block: Our ROM with optimization.
+   1. `/test/arith/zk_rom.cpp`: Our ROM without the high fan-in multiplication optimization.
+   2. `/test/arith/zk_rom_block.cpp`: Our ROM with the high fan-in multiplication optimization.
 
 3. Our set data structure:
-   1. arith_inset_zk_rom: Our set data structure without optimization.
-   2. arith_inset_zk_rom_block: Our set data structure with optimization.
+   1. `/test/arith/inset_zk_rom.cpp`: Our set data structure without the high fan-in multiplication optimization.
+   2. `/test/arith/inset_zk_rom_block.cpp`: Our set data structure with the high fan-in multiplication optimization.
 
 4. Our implementation of GOT+22:
-   1. arith_GOT_nomulcheck: Our implementation of GOT+22 without any optimization.
-   2. arith_GOT: Our implementation of GOT+22 without high-fan-in multiplication optimization.
-   3. arith_GOT_block: Our implementation of GOT+22 with all optimizations.
+   1. `/test/arith/GOT_nomulcheck.cpp`: Our implementation of GOT+22 without any optimization.
+   2. `/test/arith/GOT.cpp`: Our implementation of GOT+22 without high-fan-in multiplication optimization.
+   3. `/test/arith/GOT_block.cpp`: Our implementation of GOT+22 with all optimizations.
 
-5. FKL+21 as baseline: avaiable at https://github.com/emp-toolkit/emp-zk.
-
-Core Header Files
-=====
-zk-ram folder includes the core codes.
+5. FKL+21 as baseline: The FKL+21 implementation is available here: https://github.com/emp-toolkit/emp-zk.
