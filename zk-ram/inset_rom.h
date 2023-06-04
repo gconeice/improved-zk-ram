@@ -139,7 +139,7 @@ public:
         }
 	    
         IntFp prod_read = IntFp(1, PUBLIC); 
-        vector<IntFp> final_tree_r;
+        //vector<IntFp> final_tree_r;
 
         // for the combine (poly's) term proof
         block seed; 
@@ -183,8 +183,8 @@ public:
                 }
             }
             IntFp combine_r_term = IntFp(product_r, ALICE);
-            //prod_read = prod_read * combine_r_term;
-            final_tree_r.push_back(combine_r_term);
+            prod_read = prod_read * combine_r_term;
+            // final_tree_r.push_back(combine_r_term);
             // checking the combine term is correctly formed
             if (party == ALICE) {
                 //std::cout << C_r[block_size] << ' ' << HIGH64(combine_r_term.value) << std::endl;
@@ -207,7 +207,7 @@ public:
         for (int i = 0; i < N; i++) 
             acc = mult_mod(acc, add_mod(mult_mod(A0, i+1), X));                        
         IntFp prod_write = IntFp(acc, PUBLIC);
-        vector<IntFp> final_tree_w;
+        // vector<IntFp> final_tree_w;
 
         now_i = N;
         while (now_i < N+T) {
@@ -234,8 +234,8 @@ public:
                 }
             }
             IntFp combine_w_term = IntFp(product_w, ALICE);
-            //prod_write = prod_write * combine_w_term;
-            final_tree_w.push_back(combine_w_term);
+            prod_write = prod_write * combine_w_term;
+            // final_tree_w.push_back(combine_w_term);
             // checking the combine term is correctly formed
             if (party == ALICE) {
                 //std::cout << C_r[block_size] << ' ' << HIGH64(combine_r_term.value) << std::endl;
@@ -254,8 +254,8 @@ public:
             }
         }
 
-        EpsilonScan(party, final_tree_r, final_tree_r.size(), block_size, prg, acc_C, acc_K, prod_read);
-        EpsilonScan(party, final_tree_w, final_tree_w.size(), block_size, prg, acc_C, acc_K, prod_write);
+        // EpsilonScan(party, final_tree_r, final_tree_r.size(), block_size, prg, acc_C, acc_K, prod_read);
+        // EpsilonScan(party, final_tree_w, final_tree_w.size(), block_size, prg, acc_C, acc_K, prod_write);
 
         // check the polynomial proof
         // add random mask for ZK
