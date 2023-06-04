@@ -5,6 +5,7 @@
 #include <iostream>
 #include "emp-tool/emp-tool.h"
 #include "inset_rom.h"
+#include "ram_util.h"
 #include <vector>
 #if defined(__linux__)
 	#include <sys/time.h>
@@ -170,6 +171,8 @@ public:
 	    
         IntFp prod_read = IntFp(1, PUBLIC);
         IntFp prod_write = IntFp(1, PUBLIC);
+        vector<IntFp> final_tree_r;
+        vector<IntFp> final_tree_w;
 
         // for the combine (poly's) term proof
         block seed; 
@@ -227,8 +230,10 @@ public:
             }
             IntFp combine_r_term = IntFp(product_r, ALICE);
             IntFp combine_w_term = IntFp(product_w, ALICE);
-            prod_read = prod_read * combine_r_term;
-            prod_write = prod_write * combine_w_term;
+            final_tree_r.push_back(combine_r_term);
+            final_tree_w.push_back(combine_w_term);
+            //prod_read = prod_read * combine_r_term;
+            //prod_write = prod_write * combine_w_term;
             // checking the combine term is correctly formed
             if (party == ALICE) {
                 //std::cout << C_r[block_size] << ' ' << HIGH64(combine_r_term.value) << std::endl;
@@ -254,6 +259,9 @@ public:
                 acc_K = add_mod(acc_K, mult_mod(random_c, K_w));                
             }
         }
+
+        EpsilonScan(party, final_tree_r, final_tree_r.size(), block_size, prg, acc_C, acc_K, prod_read);
+        EpsilonScan(party, final_tree_w, final_tree_w.size(), block_size, prg, acc_C, acc_K, prod_write);
 
         // check the polynomial proof
         // add random mask for ZK
