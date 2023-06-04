@@ -4,7 +4,7 @@
 #include "emp-zk/emp-zk.h"
 #include <iostream>
 #include "emp-tool/emp-tool.h"
-#include "ram_util.h"
+// #include "ram_util.h"
 #include <vector>
 #if defined(__linux__)
 	#include <sys/time.h>

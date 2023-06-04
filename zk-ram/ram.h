@@ -5,7 +5,7 @@
 #include <iostream>
 #include "emp-tool/emp-tool.h"
 #include "inset_rom.h"
-#include "ram_util.h"
+// #include "ram_util.h"
 #include <vector>
 #if defined(__linux__)
 	#include <sys/time.h>
