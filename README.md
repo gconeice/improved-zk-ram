@@ -8,7 +8,7 @@ Basis on EMP
 Our ZK RAM is based on QuickSilver's (https://eprint.iacr.org/2021/076) repository, which is part of the EMP Toolkit: https://github.com/emp-toolkit/emp-zk. In particular, we forked their repository and developed based on it. We also tweak some of EMP's libraries.
 In our final open source version, we will further clarify all changes.
 
-Our final open source version will obey the MIT license included as part of EMP.
+MIT license is included as part of EMP.
 
 Installing EMP
 =====
