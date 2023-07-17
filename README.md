@@ -49,3 +49,7 @@ We include the following tests:
    3. `/test/arith/GOT_block.cpp`: Our implementation of GOT+22 with all optimizations.
 
 5. FKL+21 as baseline: The FKL+21 implementation is available here: https://github.com/emp-toolkit/emp-zk.
+
+Question
+=====
+Please email to Yibin Yang (yyang811@gatech.edu) and David Heath (daheath@illinois.edu).
