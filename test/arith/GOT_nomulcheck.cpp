@@ -413,15 +413,15 @@ void test_circuit_zk(BoolIO<NetIO> *ios[threads], int party, uint64_t logN, int 
 }
 
 int main(int argc, char** argv) {
-    if(argc < 4) {
-		std::cout << "usage: bin/test_arith_zk_rom_block PARTY PORT logN blockSize" << std::endl;
+    if(argc < 6) {
+		std::cout << "usage: bin/test_arith_zk_rom_block PARTY PORT logN blockSize IP" << std::endl;
 		return -1;    
     }
 
 	parse_party_and_port(argv, &party, &port);
 	BoolIO<NetIO>* ios[threads];
 	for(int i = 0; i < threads; ++i)
-		ios[i] = new BoolIO<NetIO>(new NetIO(party == ALICE?nullptr:"127.0.0.1",port+i), party==ALICE);
+		ios[i] = new BoolIO<NetIO>(new NetIO(party == ALICE?nullptr:argv[5],port+i), party==ALICE);
 
 	std::cout << std::endl << "------------ circuit zero-knowledge proof test ------------" << std::endl << std::endl;;
 
