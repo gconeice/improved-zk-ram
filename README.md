@@ -1,7 +1,7 @@
 # Improved Constant Overhead ZK RAM
 
 This repository implements state-of-the-art arithmetic circuits for Zero Knowledge random access memory (RAM), read-only memory (ROM), and a set membership data structure.
-See our paper for details.
+See our paper (https://eprint.iacr.org/2023/1115) for details.
 
 Basis on EMP
 =====
