@@ -2,6 +2,7 @@
 
 This repository implements state-of-the-art arithmetic circuits for Zero Knowledge random access memory (RAM), read-only memory (ROM), and a set membership data structure.
 See our paper (https://eprint.iacr.org/2023/1115) for details.
+The paper will be presented at USENIX Security 2024.
 
 Basis on EMP
 =====
