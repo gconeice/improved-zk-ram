@@ -93,7 +93,7 @@ int main(int argc, char** argv) {
 	parse_party_and_port(argv, &party, &port);
 	BoolIO<NetIO>* ios[threads];
 	for(int i = 0; i < threads; ++i)
-		ios[i] = new BoolIO<NetIO>(new NetIO(party == ALICE?nullptr:"127.0.0.1",port), party==ALICE);
+		ios[i] = new BoolIO<NetIO>(new NetIO(party == ALICE?nullptr:argv[4],port), party==ALICE);
 
 	if (argc > 3)
 		index_sz = atoi(argv[3]);
