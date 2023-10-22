@@ -13,6 +13,7 @@ MIT license is included as part of EMP.
 
 Installing EMP
 =====
+You can type `bash setup.sh`. Or step-by-step:
 1. `wget https://raw.githubusercontent.com/emp-toolkit/emp-readme/master/scripts/install.py`
 2. `python[3] install.py --deps --tool --ot --zk`
     1. By default it will build for Release. `-DCMAKE_BUILD_TYPE=[Release|Debug]` option is also available.
@@ -20,6 +21,7 @@ Installing EMP
 
 Build
 =====
+You can type `bash build.sh`. Or step-by-step:
 1. `mkdir build && cd build && cmake ../ && make`
 
 Browsing the code
@@ -27,7 +29,7 @@ Browsing the code
 `/zk-ram` contains our core code.
 `/test/arith` contains our test scaffolding (see next).
 `/emp-zk` contains the EMP Toolkit's ZK library, including the implementation
-of FKL+21 (see `/emp-zk/extensions/ram-zk`).
+of FKL+21 (see `/baseline/`).
 
 Test
 =====
@@ -49,7 +51,7 @@ We include the following tests:
    2. `/test/arith/GOT.cpp`: Our implementation of GOT+22 without high-fan-in multiplication optimization.
    3. `/test/arith/GOT_block.cpp`: Our implementation of GOT+22 with all optimizations.
 
-5. FKL+21 as baseline: The FKL+21 implementation is available here: https://github.com/emp-toolkit/emp-zk.
+5. FKL+21 as baseline: The FKL+21 implementation is available here: https://github.com/emp-toolkit/emp-zk. We include the version we used in the folder `baseline`.
 
 Question
 =====
